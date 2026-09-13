@@ -113,3 +113,31 @@ def export_excel(session_id: int, db: Session = Depends(get_db)):
         )
     except Exception as e:
         raise HTTPException(status_code=404, detail=str(e))
+
+    # 1. Delete a Student by Registration Number
+@app.delete("/students/{reg_no}")
+def delete_student(reg_no: str, db: Session = Depends(get_db)):
+    student = db.query(models.Student).filter(models.Student.reg_no == reg_no).first()
+    if not student:
+        raise HTTPException(status_code=404, detail="Student not found")
+    
+    # Delete associated logs first to preserve foreign key constraints
+    db.query(models.AttendanceLog).filter(models.AttendanceLog.student_id == student.id).delete()
+    
+    db.delete(student)
+    db.commit()
+    return {"message": f"Student with registration number {reg_no} deleted successfully"}
+
+# 2. Delete an Attendance Session by Session ID
+@app.delete("/history/{session_id}")
+def delete_session(session_id: int, db: Session = Depends(get_db)):
+    session = db.query(models.AttendanceSession).filter(models.AttendanceSession.id == session_id).first()
+    if not session:
+        raise HTTPException(status_code=404, detail="Attendance session not found")
+    
+    # Delete all associated attendance logs for this session
+    db.query(models.AttendanceLog).filter(models.AttendanceLog.session_id == session_id).delete()
+    
+    db.delete(session)
+    db.commit()
+    return {"message": f"Attendance session {session_id} deleted successfully"}
