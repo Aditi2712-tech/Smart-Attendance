@@ -1,6 +1,21 @@
-dlenv/
+# Python
 __pycache__/
-*.pyc
-.env
-*.db
-exports/*.xlsx
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# macOS / IDE
+.DS_Store
+.vscode/
+
+# Biometric face embeddings
+embeddings/
+*.npy
+
+# Local face datasets / photos
+dataset/
+.insightface/
