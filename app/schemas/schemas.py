@@ -44,18 +44,15 @@ class StudentOut(BaseModel):
     year: Optional[str] = None
     section: Optional[str] = None
 
-    class Config:
-        orm_mode = True
-
+    model_config = {"from_attributes": True}
 
 class AttendanceRecordOut(BaseModel):
     student: StudentOut
     status: str
     similarity_score: Optional[float] = None
 
-    class Config:
-        from_attributes = True
-
+    model_config = {"from_attributes": True}
+    
 
 class AttendanceResponse(BaseModel):
     class_session_id: int

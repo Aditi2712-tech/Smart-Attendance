@@ -20,9 +20,16 @@ from app import models
 from app.database import get_db
 from app.main import app
 
+from sqlalchemy.pool import StaticPool
+
 # --- Test DB setup (SQLite in-memory, fresh per test run) -------------
+
 TEST_DB_URL = "sqlite:///:memory:"
-engine = create_engine(TEST_DB_URL, connect_args={"check_same_thread": False})
+engine = create_engine(
+    TEST_DB_URL,
+    connect_args={"check_same_thread": False},
+    poolclass=StaticPool,
+)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
@@ -53,7 +60,7 @@ def fake_embedding(seed: int) -> list:
     """Deterministic fake 512-d embedding so cosine similarity is predictable."""
     import numpy as np
     rng = np.random.RandomState(seed)
-    vec = rng.rand(512)
+    vec = rng.randn(512)
     return vec.tolist()
 
 
@@ -171,7 +178,7 @@ def test_duplicate_detection_same_student_dedupes(client, monkeypatch):
 # expected row count.
 # ------------------------------------------------------------------
 def test_excel_export_large_class(client):
-    from app.excel_export import generate_attendance_excel
+    from app.services.excel_service import generate_attendance_excel
     import pandas as pd
 
     db = TestingSessionLocal()

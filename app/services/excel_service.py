@@ -45,7 +45,7 @@ from app.models import AttendanceRecord, ClassSession
 
 
 def generate_attendance_excel(db: Session, class_session_id: int) -> BytesIO:
-    session = db.query(ClassSession).get(class_session_id)
+    session = db.get(ClassSession, class_session_id)
     if session is None:
         raise ValueError(f"No class session with id {class_session_id}")
 

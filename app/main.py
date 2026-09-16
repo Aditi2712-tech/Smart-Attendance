@@ -236,7 +236,7 @@ def register_student(
         db.commit()
         db.refresh(student)
         logger.info(f"Registered student {registration_number}")
-        return StudentOut.from_orm(student)
+        return StudentOut.model_validate(student)
 
     except HTTPException:
         raise
@@ -256,12 +256,12 @@ def recognize_and_mark(
     image: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
-    if recognize_classroom_faces is None:
-        raise HTTPException(status_code=503, detail="AI module not available")
-
     # --- Validate the upload before touching the AI module ---
     if image.content_type not in ("image/jpeg", "image/png", "image/jpg"):
         raise HTTPException(status_code=415, detail="Upload a JPEG or PNG image")
+
+    if recognize_classroom_faces is None:
+        raise HTTPException(status_code=503, detail="AI module not available")
 
     image_bytes = image.file.read()
     if len(image_bytes) == 0:
@@ -334,7 +334,7 @@ def recognize_and_mark(
         present_count=present_count,
         absent_count=absent_count,
         unknown_faces_detected=unknown_count,
-        records=[AttendanceRecordOut.from_orm(r) for r in records],
+        records=[AttendanceRecordOut.model_validate(r) for r in records],
     )
 
 
