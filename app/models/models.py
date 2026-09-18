@@ -52,7 +52,7 @@ from sqlalchemy import (
     UniqueConstraint, Enum as SAEnum
 )
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 import enum
 import datetime
 

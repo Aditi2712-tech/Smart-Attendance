@@ -18,7 +18,7 @@ Adjust the import path if their module is named/located differently.
 ```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
-using this 
+-using this
 ```bash
 http://localhost:8000/docs
 ```
@@ -28,7 +28,7 @@ http://localhost:8000/docs
 
 ## 4. Run the automated tests (Day 8)
 ```bash
-pytest tests/test_backend.py -v
+python -m pytest tests/tests_backend.py -v
 ```
 These use an in-memory SQLite DB and a mocked AI function, so they run in
 seconds and don't need Postgres or InsightFace installed to pass. They cover:
