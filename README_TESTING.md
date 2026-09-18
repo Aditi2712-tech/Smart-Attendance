@@ -18,6 +18,10 @@ Adjust the import path if their module is named/located differently.
 ```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
+using this 
+```bash
+http://localhost:8000/docs
+```
 - `/docs` gives you Swagger UI — the fastest way to manually test each endpoint.
 - Use `0.0.0.0` (not `127.0.0.1`) so Member 3's emulator/device can reach it.
 - Android emulator hits your machine at `10.0.2.2:8000`; a physical device needs your LAN IP.
